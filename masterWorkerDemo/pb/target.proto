@@ -1,0 +1,80 @@
+/*
+.pb.go: protoc -I . --go_out=plugins=grpc,Mgoogle/api/annotations.proto=golangdemo/masterWorkerDemo/pb/google.golang.org/genproto/googleapis/api/annotations:. ./target.proto
+.pb.gw.go: protoc --grpc-gateway_out=logtostderr=true:. ./target.proto
+*/
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+// 目标库信息
+message TargetLib {
+    string lib_id = 1;
+    string name = 2;
+    int32 type = 3;
+    int32 target_count = 4;
+}
+
+// 目标信息
+message Target {
+    string target_id = 1;
+    string name = 2;
+    int32 gender = 3;
+    int32 age = 4;
+    string address = 5;
+    string id_number = 6;
+    string nation = 7;
+    string img_url = 8;
+} 
+
+// 添加目标请求
+message TargetAddRequest {
+    Target target = 1;
+}
+
+// 添加目标响应
+message TargetAddResponse {
+    string target_id = 1;
+}
+
+// 删除目标请求
+message TargetDelRequest {
+    string target_id = 1;
+}
+
+// 删除目标响应
+message TargetDelResponse {
+}
+
+// 查询目标库列表请求
+message TargetLibListRequest {
+}
+
+// 查询目标库列表响应
+message TargetLibListResponse {
+    repeated TargetLib libs = 1;
+}
+
+// 目标管理服务.
+service TargetService {
+    // 查询目标库
+    rpc TargetLibList(TargetLibListRequest) returns (TargetLibListResponse) {
+        option (google.api.http) = {
+            get: "/target_libs"
+        };
+    };
+
+    // 添加目标
+    rpc TargetAdd(TargetAddRequest) returns (TargetAddResponse) {
+        option (google.api.http) = {
+            post: "/targets"
+            body: "*"
+          };
+    };
+
+    // 删除目标
+    rpc TargetDelete(TargetDelRequest) returns (TargetDelResponse) {
+        option (google.api.http) = {
+            delete: "/targets/{target_id}"
+        };
+    };
+}

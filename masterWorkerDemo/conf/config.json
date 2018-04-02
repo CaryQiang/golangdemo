@@ -1,0 +1,5 @@
+{
+    "AlarmEndpoint":":7071",
+    "TargetEndpoint":":8080",
+    "TargetGrpcpoint":":8082"
+}
